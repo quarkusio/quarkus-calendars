@@ -26,13 +26,8 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: quarkus-app
-          path: target/quarkus-app/
-          run-id: ${{ github.event.workflow_run.id }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build application
+        run: ./mvnw package -DskipTests
 
       - name: Reconcile calendar events
         env:

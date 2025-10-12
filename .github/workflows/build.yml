@@ -48,11 +48,3 @@ jobs:
 
           # Clean up
           rm -f /tmp/service-account-key.json
-
-      - name: Upload build artifacts
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: actions/upload-artifact@v4
-        with:
-          name: quarkus-app
-          path: target/quarkus-app/
-          retention-days: 1
