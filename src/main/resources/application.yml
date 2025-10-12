@@ -1,0 +1,26 @@
+# Quarkus Calendars Configuration
+
+quarkus:
+  application:
+    name: quarkus-calendars
+
+# Google Calendars Configuration
+google:
+  calendar:
+    # Path to service account credentials JSON file
+    service-account-key: ${GOOGLE_SERVICE_ACCOUNT_KEY:service-account.json}
+    application-name: ${quarkus.application.name}
+    calendars:
+      releases:
+        id: ${QUARKUS_RELEASES_CALENDAR_ID:}
+        name: quarkus-releases
+      calls:
+        id: ${QUARKUS_CALLS_CALENDAR_ID:}
+        name: quarkus-calls
+
+# Reconciliation Configuration
+reconciliation:
+  # Number of months before today to include in reconciliation (default: 1)
+  months-before: 1
+  # Number of months after today to include in reconciliation (default: 4)
+  months-after: 4
