@@ -4,6 +4,7 @@ import com.google.api.services.calendar.model.Event;
 import io.quarkus.calendars.config.GoogleCalendarConfig;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
@@ -12,6 +13,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @QuarkusTest
+@Disabled("Requires Google Calendar access - enable when needed")
 class GoogleCalendarServiceTest {
 
     @Inject
