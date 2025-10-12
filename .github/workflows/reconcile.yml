@@ -1,0 +1,63 @@
+name: Reconcile Calendar Events
+
+on:
+  workflow_run:
+    workflows: ["Build"]
+    types:
+      - completed
+    branches:
+      - main
+
+jobs:
+  reconcile:
+    name: Reconcile Events to Google Calendar
+    runs-on: ubuntu-latest
+    # Only run if the build workflow succeeded
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: quarkus-app
+          path: target/quarkus-app/
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Reconcile calendar events
+        env:
+          GOOGLE_CALENDAR_RELEASES_ID: ${{ secrets.GOOGLE_CALENDAR_RELEASES_ID }}
+          GOOGLE_CALENDAR_CALLS_ID: ${{ secrets.GOOGLE_CALENDAR_CALLS_ID }}
+          GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
+          GOOGLE_SERVICE_ACCOUNT_KEY_PATH: /tmp/service-account-key.json
+        run: |
+          # Create service account key file from secret
+          echo "$GOOGLE_SERVICE_ACCOUNT_KEY" > /tmp/service-account-key.json
+
+          # Run reconcile (without dry-run to actually sync)
+          java -jar target/quarkus-app/quarkus-run.jar reconcile
+
+          # Clean up
+          rm -f /tmp/service-account-key.json
+
+      - name: Notify on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '⚠️ Calendar reconciliation failed. Please check the workflow logs.'
+            })

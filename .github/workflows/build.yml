@@ -1,0 +1,58 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Build with Maven
+        run: ./mvnw clean verify
+
+      - name: Run check-format command
+        run: |
+          ./mvnw package -DskipTests
+          java -jar target/quarkus-app/quarkus-run.jar check-format
+
+      - name: Run reconcile command (dry-run) on main branch
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        env:
+          GOOGLE_CALENDAR_RELEASES_ID: ${{ secrets.GOOGLE_CALENDAR_RELEASES_ID }}
+          GOOGLE_CALENDAR_CALLS_ID: ${{ secrets.GOOGLE_CALENDAR_CALLS_ID }}
+          GOOGLE_SERVICE_ACCOUNT_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
+          GOOGLE_SERVICE_ACCOUNT_KEY_PATH: /tmp/service-account-key.json
+        run: |
+          # Create service account key file from secret
+          echo "$GOOGLE_SERVICE_ACCOUNT_KEY" > /tmp/service-account-key.json
+
+          # Run reconcile in dry-run mode
+          java -jar target/quarkus-app/quarkus-run.jar reconcile --dry-run
+
+          # Clean up
+          rm -f /tmp/service-account-key.json
+
+      - name: Upload build artifacts
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: quarkus-app
+          path: target/quarkus-app/
+          retention-days: 1

@@ -8,14 +8,16 @@ quarkus:
 google:
   calendar:
     # Path to service account credentials JSON file
-    service-account-key: ${GOOGLE_SERVICE_ACCOUNT_KEY:service-account.json}
+    service-account-key: ${GOOGLE_SERVICE_ACCOUNT_KEY_PATH:service-account.json}
     application-name: ${quarkus.application.name}
     calendars:
       releases:
-        id: ${QUARKUS_RELEASES_CALENDAR_ID:}
+        # Calendar ID from env var or empty (will fail if not set)
+        id: ${GOOGLE_CALENDAR_RELEASES_ID:}
         name: quarkus-releases
       calls:
-        id: ${QUARKUS_CALLS_CALENDAR_ID:}
+        # Calendar ID from env var or empty (will fail if not set)
+        id: ${GOOGLE_CALENDAR_CALLS_ID:}
         name: quarkus-calls
 
 # Reconciliation Configuration
