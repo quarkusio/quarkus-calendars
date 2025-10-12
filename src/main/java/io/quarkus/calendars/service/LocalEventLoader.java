@@ -106,6 +106,9 @@ public class LocalEventLoader {
             Log.warnf(e, "Failed to read directory %s", directory);
         }
 
+        // Sort events by date
+        events.sort((e1, e2) -> e1.getDate().compareTo(e2.getDate()));
+
         return events;
     }
 

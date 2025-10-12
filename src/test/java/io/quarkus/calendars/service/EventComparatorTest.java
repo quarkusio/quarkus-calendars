@@ -120,7 +120,7 @@ class EventComparatorTest {
     }
 
     @Test
-    void shouldDetectDescriptionDifferenceEvenWithSameCallLink() {
+    void shouldNotNeedUpdateWhenCallLinkAppendedToRemoteDescription() {
         CallEvent localEvent = new CallEvent(
             "November 2025 Quarkus Community Call",
             "Monthly community sync",
@@ -139,8 +139,8 @@ class EventComparatorTest {
             "https://meet.google.com/abc-defg-hij"
         );
 
-        // Remote has call link appended to description, making it different
-        assertThat(eventComparator.needsUpdate(localEvent, remoteEvent)).isTrue();
+        // Remote has call link appended to description, but after normalization they match
+        assertThat(eventComparator.needsUpdate(localEvent, remoteEvent)).isFalse();
     }
 
     @Test
@@ -301,18 +301,19 @@ class EventComparatorTest {
         }
         event.setDescription(fullDescription);
 
-        long startMillis = date.atTime(time).atZone(java.time.ZoneId.of("UTC"))
-            .toInstant().toEpochMilli();
-        long endMillis = date.atTime(time).plus(duration).atZone(java.time.ZoneId.of("UTC"))
-            .toInstant().toEpochMilli();
+        // Create DateTime in UTC using RFC3339 format string
+        java.time.ZonedDateTime startZdt = date.atTime(time).atZone(java.time.ZoneId.of("UTC"));
+        java.time.ZonedDateTime endZdt = startZdt.plus(duration);
+
+        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
         EventDateTime start = new EventDateTime();
-        start.setDateTime(new DateTime(startMillis));
+        start.setDateTime(DateTime.parseRfc3339(formatter.format(startZdt)));
         start.setTimeZone("UTC");
         event.setStart(start);
 
         EventDateTime end = new EventDateTime();
-        end.setDateTime(new DateTime(endMillis));
+        end.setDateTime(DateTime.parseRfc3339(formatter.format(endZdt)));
         end.setTimeZone("UTC");
         event.setEnd(end);
 

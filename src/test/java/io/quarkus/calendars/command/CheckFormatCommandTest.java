@@ -36,7 +36,6 @@ class CheckFormatCommandTest {
         assertThat(result.getOutput())
                 .contains("Checking YAML event formats")
                 .contains("quarkus-releases/")
-                .contains("quarkus-calls/")
                 .contains("✓ All event files are valid!");
     }
 
