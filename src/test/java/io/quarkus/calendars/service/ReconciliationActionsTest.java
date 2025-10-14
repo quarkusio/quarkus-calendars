@@ -284,4 +284,61 @@ class ReconciliationActionsTest {
 
         System.out.println("Date range respected - excluded " + 2 + " out-of-range events");
     }
+
+    @Test
+    void shouldDeleteManagedOrphanEvents() {
+        LocalDate today = LocalDate.now();
+
+        // Add a managed event (created by us with extended properties)
+        Event managedEvent = mockCalendarService.createMockEvent(
+            "Managed Event To Be Deleted",
+            today.plusMonths(2)
+        );
+        Event.ExtendedProperties extendedProps = new Event.ExtendedProperties();
+        extendedProps.setPrivate(Map.of("managedBy", "quarkus-calendars"));
+        managedEvent.setExtendedProperties(extendedProps);
+        mockCalendarService.addEvent(RELEASES_CALENDAR_ID, managedEvent);
+
+        // Add an unmanaged event (created manually, no extended properties)
+        Event unmanagedEvent = mockCalendarService.createMockEvent(
+            "Unmanaged External Event",
+            today.plusMonths(2)
+        );
+        mockCalendarService.addEvent(RELEASES_CALENDAR_ID, unmanagedEvent);
+
+        int initialCount = mockCalendarService.getEventCount(RELEASES_CALENDAR_ID);
+
+        // Execute reconciliation
+        List<ReconciliationAction> actions = reconciliation.reconcileReleases(
+            today.minusMonths(1),
+            today.plusMonths(4)
+        );
+
+        // Should have DELETE action for managed orphan
+        long deleteActions = actions.stream()
+            .filter(a -> a.getType() == ReconciliationAction.ActionType.DELETE)
+            .count();
+
+        // Should have WARN_ORPHAN action for unmanaged orphan
+        long warnActions = actions.stream()
+            .filter(a -> a.getType() == ReconciliationAction.ActionType.WARN_ORPHAN)
+            .count();
+
+        assertThat(deleteActions).isEqualTo(1);
+        assertThat(warnActions).isEqualTo(1);
+
+        // Verify managed event was deleted, but 3 new events were created from local files
+        // Initial: 2 (managed + unmanaged)
+        // After reconcile: 4 (3 new local + 1 unmanaged orphan)
+        // The managed orphan was deleted
+        int finalCount = mockCalendarService.getEventCount(RELEASES_CALENDAR_ID);
+        long createActions = actions.stream()
+            .filter(a -> a.getType() == ReconciliationAction.ActionType.CREATE)
+            .count();
+
+        // finalCount = initialCount - deleted + created
+        assertThat(finalCount).isEqualTo(initialCount - deleteActions + createActions);
+
+        System.out.println("Managed orphan deleted, unmanaged orphan preserved with warning");
+    }
 }

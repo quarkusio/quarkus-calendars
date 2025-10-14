@@ -226,12 +226,34 @@ public class CalendarReconciliation {
             String key = getEventKey(remoteEvent);
 
             if (!matchedRemoteEvents.containsKey(key)) {
-                // Remote event without local file - warn but don't delete
-                actions.add(ReconciliationAction.warnOrphan(remoteEvent, calendarId));
+                // Remote event without local file
+                if (isManagedByUs(remoteEvent)) {
+                    // Delete events we created but no longer have a local file for
+                    actions.add(ReconciliationAction.delete(remoteEvent, calendarId));
+                } else {
+                    // Warn about external events (created manually or by another tool)
+                    actions.add(ReconciliationAction.warnOrphan(remoteEvent, calendarId));
+                }
             }
         }
 
         return actions;
+    }
+
+    /**
+     * Check if a remote event was created and is managed by this tool.
+     */
+    private boolean isManagedByUs(com.google.api.services.calendar.model.Event event) {
+        if (event.getExtendedProperties() == null) {
+            return false;
+        }
+
+        var privateProps = event.getExtendedProperties().getPrivate();
+        if (privateProps == null) {
+            return false;
+        }
+
+        return "quarkus-calendars".equals(privateProps.get("managedBy"));
     }
 
     /**
@@ -335,6 +357,12 @@ public class CalendarReconciliation {
 
         googleEvent.setSummary(localEvent.getTitle());
         googleEvent.setDescription(localEvent.getDescription());
+
+        // Mark event as managed by this tool using extended properties
+        com.google.api.services.calendar.model.Event.ExtendedProperties extendedProperties =
+            new com.google.api.services.calendar.model.Event.ExtendedProperties();
+        extendedProperties.setPrivate(java.util.Map.of("managedBy", "quarkus-calendars"));
+        googleEvent.setExtendedProperties(extendedProperties);
 
         if (localEvent instanceof ReleaseEvent) {
             // All-day event

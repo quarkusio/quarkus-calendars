@@ -92,7 +92,7 @@ callLink: https://meet.google.com/abc-defg-hij
 - `title`: (Required) Name of the call
 - `description`: (Required) Description of the call's purpose
 - `date`: (Required) Call date in `YYYY-MM-DD` format
-- `time`: (Required) Call time in UTC, format `HH:MM:SS`
+- `time`: (Required) Call time in **UTC**, format `HH:MM:SS`
 - `duration`: (Optional) Duration in ISO-8601 format (default: `PT50M` = 50 minutes)
 - `callLink`: (Required) Video call URL (Google Meet, Zoom, etc.)
 

@@ -103,7 +103,8 @@ public class EventComparator {
 
         if (start.getDateTime() != null) {
             ZonedDateTime zdt = ZonedDateTime.parse(start.getDateTime().toString());
-            return zdt.toLocalTime();
+            // Convert to UTC before extracting LocalTime, since YAML times are in UTC
+            return zdt.withZoneSameInstant(java.time.ZoneId.of("UTC")).toLocalTime();
         }
 
         return null;
