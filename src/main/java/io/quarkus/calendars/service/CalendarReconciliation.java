@@ -7,11 +7,13 @@ import io.quarkus.calendars.model.CallEvent;
 import io.quarkus.calendars.model.Event;
 import io.quarkus.calendars.model.ReconciliationAction;
 import io.quarkus.calendars.model.ReleaseEvent;
+import io.quarkus.calendars.util.Constants;
+import io.quarkus.calendars.util.EventUtils;
+import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,7 +64,7 @@ public class CalendarReconciliation {
         LocalDate endDate = LocalDate.now().plusMonths(reconciliationConfig.monthsAfter());
 
         if (!dryRun) {
-            System.out.println("Reconciling events from " + startDate + " to " + endDate);
+            Log.infof("Reconciling events from %s to %s", startDate, endDate);
         }
 
         List<ReconciliationAction> actions = new ArrayList<>();
@@ -77,7 +79,7 @@ public class CalendarReconciliation {
      * Returns the list of actions that were executed.
      */
     public List<ReconciliationAction> reconcile(LocalDate startDate, LocalDate endDate) {
-        System.out.println("Reconciling events from " + startDate + " to " + endDate);
+        Log.infof("Reconciling events from %s to %s", startDate, endDate);
 
         List<ReconciliationAction> actions = new ArrayList<>();
         actions.addAll(reconcileReleases(startDate, endDate));
@@ -97,21 +99,10 @@ public class CalendarReconciliation {
      * Reconcile release events with optional dry-run mode.
      */
     public List<ReconciliationAction> reconcileReleases(LocalDate startDate, LocalDate endDate, boolean dryRun) {
-        try {
-            String calendarId = config.calendars().releases().id()
-                .orElseThrow(() -> new IllegalStateException("Releases calendar ID not configured"));
-
-            List<ReleaseEvent> localEvents = localEventLoader.loadReleaseEvents(startDate, endDate);
-            List<com.google.api.services.calendar.model.Event> remoteEvents =
-                calendarService.listEvents(calendarId, 100);
-
-            // Filter remote events by date range
-            remoteEvents = filterByDateRange(remoteEvents, startDate, endDate);
-
-            return reconcile(localEvents, remoteEvents, calendarId, dryRun);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to reconcile releases", e);
-        }
+        String calendarId = config.calendars().releases().id()
+            .orElseThrow(() -> new IllegalStateException("Releases calendar ID not configured"));
+        List<ReleaseEvent> localEvents = localEventLoader.loadReleaseEvents(startDate, endDate);
+        return reconcileCalendar(localEvents, calendarId, startDate, endDate, dryRun, "releases");
     }
 
     /**
@@ -125,11 +116,23 @@ public class CalendarReconciliation {
      * Reconcile call events with optional dry-run mode.
      */
     public List<ReconciliationAction> reconcileCalls(LocalDate startDate, LocalDate endDate, boolean dryRun) {
-        try {
-            String calendarId = config.calendars().calls().id()
-                .orElseThrow(() -> new IllegalStateException("Calls calendar ID not configured"));
+        String calendarId = config.calendars().calls().id()
+            .orElseThrow(() -> new IllegalStateException("Calls calendar ID not configured"));
+        List<CallEvent> localEvents = localEventLoader.loadCallEvents(startDate, endDate);
+        return reconcileCalendar(localEvents, calendarId, startDate, endDate, dryRun, "calls");
+    }
 
-            List<CallEvent> localEvents = localEventLoader.loadCallEvents(startDate, endDate);
+    /**
+     * Common reconciliation logic for any calendar.
+     */
+    private <T extends Event> List<ReconciliationAction> reconcileCalendar(
+            List<T> localEvents,
+            String calendarId,
+            LocalDate startDate,
+            LocalDate endDate,
+            boolean dryRun,
+            String calendarType) {
+        try {
             List<com.google.api.services.calendar.model.Event> remoteEvents =
                 calendarService.listEvents(calendarId, 100);
 
@@ -138,7 +141,7 @@ public class CalendarReconciliation {
 
             return reconcile(localEvents, remoteEvents, calendarId, dryRun);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to reconcile calls", e);
+            throw new RuntimeException("Failed to reconcile " + calendarType, e);
         }
     }
 
@@ -169,14 +172,14 @@ public class CalendarReconciliation {
         List<ReconciliationAction> actions = analyzeReconciliation(localEvents, remoteEvents, calendarId);
 
         if (!dryRun) {
-            System.out.println("\n=== Reconciliation Analysis ===");
-            System.out.println("Found " + actions.size() + " action(s) to perform:");
+            Log.info("\n=== Reconciliation Analysis ===");
+            Log.infof("Found %d action(s) to perform:", actions.size());
             for (ReconciliationAction action : actions) {
-                System.out.println("  - " + action);
+                Log.infof("  - %s", action);
             }
 
             // Phase 2: Execution
-            System.out.println("\n=== Executing Actions ===");
+            Log.info("\n=== Executing Actions ===");
             executeActions(actions);
         }
 
@@ -253,7 +256,7 @@ public class CalendarReconciliation {
             return false;
         }
 
-        return "quarkus-calendars".equals(privateProps.get("managedBy"));
+        return Constants.MANAGED_BY_VALUE.equals(privateProps.get(Constants.MANAGED_BY_PROPERTY));
     }
 
     /**
@@ -264,14 +267,14 @@ public class CalendarReconciliation {
             try {
                 switch (action.getType()) {
                     case CREATE -> {
-                        System.out.println("Creating: " + action.getDescription());
+                        Log.infof("Creating: %s", action.getDescription());
                         com.google.api.services.calendar.model.Event googleEvent =
                             convertToGoogleEvent(action.getLocalEvent());
                         calendarService.createEvent(action.getCalendarId(), googleEvent);
-                        System.out.println("  ✓ Created successfully");
+                        Log.info("  ✓ Created successfully");
                     }
                     case UPDATE -> {
-                        System.out.println("Updating: " + action.getDescription());
+                        Log.infof("Updating: %s", action.getDescription());
                         com.google.api.services.calendar.model.Event googleEvent =
                             convertToGoogleEvent(action.getLocalEvent());
                         calendarService.updateEvent(
@@ -279,22 +282,22 @@ public class CalendarReconciliation {
                             action.getRemoteEvent().getId(),
                             googleEvent
                         );
-                        System.out.println("  ✓ Updated successfully");
+                        Log.info("  ✓ Updated successfully");
                     }
                     case DELETE -> {
-                        System.out.println("Deleting: " + action.getDescription());
+                        Log.infof("Deleting: %s", action.getDescription());
                         calendarService.deleteEvent(
                             action.getCalendarId(),
                             action.getRemoteEvent().getId()
                         );
-                        System.out.println("  ✓ Deleted successfully");
+                        Log.info("  ✓ Deleted successfully");
                     }
                     case WARN_ORPHAN -> {
-                        System.out.println("⚠ " + action.getDescription());
+                        Log.infof("⚠ %s", action.getDescription());
                     }
                 }
             } catch (Exception e) {
-                System.err.println("  ✗ Failed to execute action: " + e.getMessage());
+                Log.errorf("  ✗ Failed to execute action: %s", e.getMessage());
             }
         }
     }
@@ -311,7 +314,7 @@ public class CalendarReconciliation {
      */
     private String getEventKey(com.google.api.services.calendar.model.Event event) {
         String title = event.getSummary();
-        LocalDate date = extractDate(event);
+        LocalDate date = EventUtils.extractDate(event);
         return title + "|" + date;
     }
 
@@ -325,27 +328,10 @@ public class CalendarReconciliation {
 
         return events.stream()
             .filter(event -> {
-                LocalDate date = extractDate(event);
+                LocalDate date = EventUtils.extractDate(event);
                 return !date.isBefore(startDate) && !date.isAfter(endDate);
             })
             .toList();
-    }
-
-    /**
-     * Extract date from Google Calendar event.
-     */
-    private LocalDate extractDate(com.google.api.services.calendar.model.Event event) {
-        EventDateTime start = event.getStart();
-
-        if (start.getDate() != null) {
-            String dateStr = start.getDate().toString();
-            return LocalDate.parse(dateStr);
-        } else if (start.getDateTime() != null) {
-            ZonedDateTime zdt = ZonedDateTime.parse(start.getDateTime().toString());
-            return zdt.toLocalDate();
-        }
-
-        throw new IllegalArgumentException("No date found for event: " + event.getSummary());
     }
 
     /**
@@ -361,7 +347,7 @@ public class CalendarReconciliation {
         // Mark event as managed by this tool using extended properties
         com.google.api.services.calendar.model.Event.ExtendedProperties extendedProperties =
             new com.google.api.services.calendar.model.Event.ExtendedProperties();
-        extendedProperties.setPrivate(java.util.Map.of("managedBy", "quarkus-calendars"));
+        extendedProperties.setPrivate(java.util.Map.of(Constants.MANAGED_BY_PROPERTY, Constants.MANAGED_BY_VALUE));
         googleEvent.setExtendedProperties(extendedProperties);
 
         if (localEvent instanceof ReleaseEvent) {
@@ -383,7 +369,7 @@ public class CalendarReconciliation {
             ZonedDateTime startTime = ZonedDateTime.of(
                 callEvent.getDate(),
                 callEvent.getTime(),
-                ZoneId.of("UTC")
+                Constants.UTC
             );
 
             EventDateTime start = new EventDateTime();

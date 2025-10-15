@@ -4,12 +4,15 @@ import com.google.api.services.calendar.model.EventDateTime;
 import io.quarkus.calendars.model.CallEvent;
 import io.quarkus.calendars.model.Event;
 import io.quarkus.calendars.model.ReleaseEvent;
+import io.quarkus.calendars.util.Constants;
+import io.quarkus.calendars.util.EventUtils;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
+import java.util.Objects;
 
 /**
  * Service for comparing local events with remote Google Calendar events.
@@ -30,7 +33,7 @@ public class EventComparator {
         }
 
         LocalDate localDate = localEvent.getDate();
-        LocalDate remoteDate = extractDate(remoteEvent);
+        LocalDate remoteDate = EventUtils.extractDate(remoteEvent);
 
         return localDate.equals(remoteDate);
     }
@@ -84,19 +87,6 @@ public class EventComparator {
         return false;
     }
 
-    private LocalDate extractDate(com.google.api.services.calendar.model.Event event) {
-        EventDateTime start = event.getStart();
-
-        if (start.getDate() != null) {
-            String dateStr = start.getDate().toString();
-            return LocalDate.parse(dateStr);
-        } else if (start.getDateTime() != null) {
-            ZonedDateTime zdt = ZonedDateTime.parse(start.getDateTime().toString());
-            return zdt.toLocalDate();
-        }
-
-        throw new IllegalArgumentException("No date found for event: " + event.getSummary());
-    }
 
     private LocalTime extractTime(com.google.api.services.calendar.model.Event event) {
         EventDateTime start = event.getStart();
@@ -104,7 +94,7 @@ public class EventComparator {
         if (start.getDateTime() != null) {
             ZonedDateTime zdt = ZonedDateTime.parse(start.getDateTime().toString());
             // Convert to UTC before extracting LocalTime, since YAML times are in UTC
-            return zdt.withZoneSameInstant(java.time.ZoneId.of("UTC")).toLocalTime();
+            return zdt.withZoneSameInstant(Constants.UTC).toLocalTime();
         }
 
         return null;
@@ -149,12 +139,6 @@ public class EventComparator {
     }
 
     private boolean equals(Object a, Object b) {
-        if (a == null && b == null) {
-            return true;
-        }
-        if (a == null || b == null) {
-            return false;
-        }
-        return a.equals(b);
+        return Objects.equals(a, b);
     }
 }

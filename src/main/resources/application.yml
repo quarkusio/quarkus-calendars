@@ -23,6 +23,6 @@ google:
 # Reconciliation Configuration
 reconciliation:
   # Number of months before today to include in reconciliation (default: 1)
-  months-before: 1
+  months-before: 4
   # Number of months after today to include in reconciliation (default: 4)
   months-after: 4
