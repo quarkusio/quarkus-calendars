@@ -1,8 +1,10 @@
 type: call
-title: November 2025 Quarkus Community Call
+title: Quarkus Community Call (Nov. 4, 2025)
 description: |
     Monthly community sync to discuss recent developments, upcoming features, and answer questions from the community.
-    This call will focus on using Quarkus for large applications.
+  
+    Topic: Quarkus for Large Applications
+    Minutes: https://docs.google.com/document/d/1TgFZsuOQo9qZ4CnQII5LHhQVgMC6YsVMs1UJIAJooyM/edit?usp=sharing
 date: 2025-11-04
 time: 13:00:00
 duration: PT50M
