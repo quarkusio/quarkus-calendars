@@ -1,10 +1,12 @@
 type: call
 title: Quarkus Community Call (Nov. 18, 2025)
 description: |
-    Monthly community sync to discuss recent developments, upcoming features, and answer questions from the community.
+    Bi-monthly community sync to discuss recent developments, upcoming features, and answer questions from the community.
 
     Topic: To be announced
     Minutes: https://docs.google.com/document/d/1TgFZsuOQo9qZ4CnQII5LHhQVgMC6YsVMs1UJIAJooyM/edit?usp=sharing
+  
+    You can now help shape the upcoming Quarkus Community Calls! Fill out this short questionnaire to tell us what topics, format, and frequency you’d prefer: https://forms.gle/SQA45m1cEEjS2Zpw7
 date: 2025-11-18
 time: 13:00:00
 duration: PT50M
