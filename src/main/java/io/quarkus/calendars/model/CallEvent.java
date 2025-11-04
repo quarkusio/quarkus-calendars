@@ -96,9 +96,7 @@ public class CallEvent extends Event {
         if (getDescription() == null || getDescription().isBlank()) {
             throw new IllegalArgumentException("Call events must have a description");
         }
-        if (getCallLink() == null || getCallLink().isBlank()) {
-            throw new IllegalArgumentException("Call events must have a call link");
-        }
+        // callLink is optional. If provided, it will be set in the calendar invite, otherwise Google will manage it.
         if (getTime() == null) {
             throw new IllegalArgumentException("Call events must have a time (in UTC)");
         }

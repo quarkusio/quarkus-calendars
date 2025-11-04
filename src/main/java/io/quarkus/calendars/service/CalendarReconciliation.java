@@ -1,5 +1,10 @@
 package io.quarkus.calendars.service;
 
+import com.google.api.services.calendar.model.ConferenceData;
+import com.google.api.services.calendar.model.ConferenceSolution;
+import com.google.api.services.calendar.model.ConferenceSolutionKey;
+import com.google.api.services.calendar.model.CreateConferenceRequest;
+import com.google.api.services.calendar.model.EntryPoint;
 import com.google.api.services.calendar.model.EventDateTime;
 import io.quarkus.calendars.config.GoogleCalendarConfig;
 import io.quarkus.calendars.config.ReconciliationConfig;
@@ -269,14 +274,14 @@ public class CalendarReconciliation {
                     case CREATE -> {
                         Log.infof("Creating: %s", action.getDescription());
                         com.google.api.services.calendar.model.Event googleEvent =
-                            convertToGoogleEvent(action.getLocalEvent());
+                            convertToGoogleEvent(action.getLocalEvent(), null);
                         calendarService.createEvent(action.getCalendarId(), googleEvent);
                         Log.info("  ✓ Created successfully");
                     }
                     case UPDATE -> {
                         Log.infof("Updating: %s", action.getDescription());
                         com.google.api.services.calendar.model.Event googleEvent =
-                            convertToGoogleEvent(action.getLocalEvent());
+                            convertToGoogleEvent(action.getLocalEvent(), action.getRemoteEvent());
                         calendarService.updateEvent(
                             action.getCalendarId(),
                             action.getRemoteEvent().getId(),
@@ -337,7 +342,9 @@ public class CalendarReconciliation {
     /**
      * Convert local Event to Google Calendar Event.
      */
-    private com.google.api.services.calendar.model.Event convertToGoogleEvent(Event localEvent) {
+    private com.google.api.services.calendar.model.Event convertToGoogleEvent(
+            Event localEvent,
+            com.google.api.services.calendar.model.Event remoteEvent) {
         com.google.api.services.calendar.model.Event googleEvent =
             new com.google.api.services.calendar.model.Event();
 
@@ -388,14 +395,33 @@ public class CalendarReconciliation {
             googleEvent.setEnd(end);
 
             // Add call link to description or location
-            if (callEvent.getCallLink() != null) {
+            ConferenceSolutionKey conferenceSolutionKey = new ConferenceSolutionKey()
+                    .setType("hangoutsMeet");
+            ConferenceData conferenceData;
+            if (callEvent.getCallLink() != null && !callEvent.getCallLink().isBlank()) {
                 String description = googleEvent.getDescription();
                 if (description == null) {
                     description = "";
                 }
                 description += "\n\nJoin: " + callEvent.getCallLink();
                 googleEvent.setDescription(description);
+
+                conferenceData = new ConferenceData()
+                        // set the link ...
+                        .setEntryPoints(List.of(new EntryPoint().setUri(callEvent.getCallLink())))
+                        // ... and that it's a meet link
+                        .setConferenceSolution(new ConferenceSolution().setKey(conferenceSolutionKey));
+            } else {
+                if (remoteEvent == null) {
+                    conferenceData = new ConferenceData()
+                            .setCreateRequest(new CreateConferenceRequest()
+                                    .setConferenceSolutionKey(conferenceSolutionKey));
+                } else {
+                    // Keep existing conference data
+                    conferenceData = remoteEvent.getConferenceData();
+                }
             }
+            googleEvent.setConferenceData(conferenceData);
         }
 
         return googleEvent;

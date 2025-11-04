@@ -84,7 +84,6 @@ description: Monthly community sync to discuss recent developments, upcoming fea
 date: 2025-11-18
 time: 14:00:00
 duration: PT50M
-callLink: https://meet.google.com/abc-defg-hij
 ```
 
 **Fields:**
@@ -94,7 +93,9 @@ callLink: https://meet.google.com/abc-defg-hij
 - `date`: (Required) Call date in `YYYY-MM-DD` format
 - `time`: (Required) Call time in **UTC**, format `HH:MM:SS`
 - `duration`: (Optional) Duration in ISO-8601 format (default: `PT50M` = 50 minutes)
-- `callLink`: (Required) Video call URL (Google Meet, Zoom, etc.)
+- `callLink`: (Optional) Video call URL (Google Meet, Zoom, etc.).
+  If not provided, the a Google Meet will be automatically added.
+  If provided, the link looks like `https://meet.google.com/abc-defg-hij`
 
 **Constraints:**
 - Call events cannot be all-day events
@@ -112,7 +113,6 @@ description: Monthly community sync to discuss recent developments, upcoming fea
 date: 2025-11-18
 time: 14:00:00
 duration: PT50M
-callLink: https://meet.google.com/abc-defg-hij
 ```
 
 ## Usage

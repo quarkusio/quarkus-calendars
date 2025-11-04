@@ -152,6 +152,9 @@ public abstract class Event {
         this.duration = duration;
     }
 
+    /**
+     * Explicitly provide a call link, leave blank or empty to let Google Calendar generate a Google Meet link.
+     */
     public void setCallLink(String callLink) {
         this.callLink = callLink;
     }
