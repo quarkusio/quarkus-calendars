@@ -1,8 +1,8 @@
 type: call
-title: Quarkus Insights Episode 240 - Quarkus & Gizmo 2? 
+title: Quarkus Insights Episode 241 - What's new with Java 25? 
 description: |
-    David Lloyd joins us to discuss Gizmo 2, a modernized, open-source bytecode generation library for Java. It serves as a simplified, higher-level alternative to complex bytecode libraries like ASM, allowing developers to generate Java class files relatively easily.
-date: 2026-03-23
+    Guillaume Smet & Sanne Grinovero join us to discuss various improvements, advancements, and changes to Quarkus with the support of Java 25.
+date: 2026-03-30
 time: 14:00:00
 duration: PT60M
 callLink: https://quarkus.io/insights/
