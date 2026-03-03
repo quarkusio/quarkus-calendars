@@ -1,0 +1,9 @@
+type: call
+title: Quarkus Insights Episode 242 - What is Quarkus Flow? 
+description: |
+    Ricardo Zanini & Matheus Cruz join us to discuss Quarkus Flow, a lightweight, low-dependency, production-grade workflow engine for Quarkus, built on the CNCF Serverless Workflow specification.
+
+date: 2026-04-06
+time: 14:00:00
+duration: PT60M
+callLink: https://quarkus.io/insights/
