@@ -18,9 +18,9 @@ Tracks release dates for Quarkus core and platform.
 - **View online**: [Quarkus Releases Calendar](https://calendar.google.com/calendar/embed?src=96e7edd0aa40dfc869532c230d06bf6502524e5ad4c9e6d1ef775923937451b5%40group.calendar.google.com&ctz=Europe%2FParis)
 - **Subscribe (iCal)**: `https://calendar.google.com/calendar/ical/96e7edd0aa40dfc869532c230d06bf6502524e5ad4c9e6d1ef775923937451b5%40group.calendar.google.com/public/basic.ics`
 
-### Quarkus Community Calls
+### Quarkus Community Calls & Quarkus Insights
 
-Manages community call schedules with video call links.
+Manages community call schedules with video call links and the Quarkus Insights live podcast.
 
 - **View online**: [Quarkus Calls Calendar](https://calendar.google.com/calendar/embed?src=935090aaae38be35eda437d018782b7827f3770f7a0344013677acd861570b20%40group.calendar.google.com&ctz=Europe%2FParis)
 - **Subscribe (iCal)**: `https://calendar.google.com/calendar/ical/935090aaae38be35eda437d018782b7827f3770f7a0344013677acd861570b20%40group.calendar.google.com/public/basic.ics`

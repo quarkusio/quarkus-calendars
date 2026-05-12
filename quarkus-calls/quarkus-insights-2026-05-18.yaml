@@ -1,0 +1,11 @@
+type: call
+title: Quarkus Insights Episode 248 - Introduction to Domain Driven Design & Hexagonal Architecture
+description: |
+    Build scalable monoliths with Quarkus, Domain-Driven Design, and Hexagonal Architecture!
+
+    In this episode, Jeremy Davis builds a monolithic Quarkus application using DDD patterns like Entities, Value Objects, Aggregates, and Ports and Adapters. Then introduces coding agents and shows how DDD not only boosts clarity but also makes your architecture agentic-ready.
+
+date: 2026-05-18
+time: 13:00:00
+duration: PT60M
+callLink: https://quarkus.io/insights/
