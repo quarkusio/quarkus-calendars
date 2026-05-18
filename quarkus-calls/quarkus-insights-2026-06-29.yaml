@@ -1,0 +1,9 @@
+type: call
+title: Quarkus Insights Episode 253 - Some thoughts on Quarkus metrics
+description: |
+    Bruno Baptista & Max Andersen shares some findings and observations based on the opt-in metrics gathered since mid 2024.
+
+date: 2026-06-29
+time: 13:00:00
+duration: PT60M
+callLink: https://quarkus.io/insights/

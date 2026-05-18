@@ -1,0 +1,9 @@
+type: call
+title: Quarkus Insights Episode 251 - Faster Startup on IBM Semeru Runtimes in Quarkus
+description: |
+    Mark Stoodley & Georgios Andrianakis join us to discuss how Quarkus now supports include IBM Semeru. OpenJ9 Shared Classes Cache, Class metadata, AOT-compiled native code and JIT profiling data with compilation hints all combine to speed up your app's startup time.
+
+date: 2026-06-15
+time: 13:00:00
+duration: PT60M
+callLink: https://quarkus.io/insights/
