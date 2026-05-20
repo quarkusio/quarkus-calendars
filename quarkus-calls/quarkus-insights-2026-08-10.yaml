@@ -1,0 +1,9 @@
+type: call
+title: Quarkus Insights Episode 256 - What is Floci?
+description: |
+   Hector Ventura joins us to discuss Floci. A fast, free, open-source AWS (and Azure) emulator built with Quarkus Native.
+
+date: 2026-08-10
+time: 13:00:00
+duration: PT60M
+callLink: https://quarkus.io/insights/
