@@ -1,0 +1,9 @@
+type: call
+title: Quarkus Insights Episode 258 - Quarkus Feature Flags
+description: |
+   Martin Kouba joins us to discuss the Quarkus Feature Flags, a lightweight and extensible feature flag extension for Quarkus. Turn features on and off, roll out gradually, or switch behavior based on context — all with a simple and intuitive API.
+
+date: 2026-09-07
+time: 13:00:00
+duration: PT60M
+callLink: https://quarkus.io/insights/
