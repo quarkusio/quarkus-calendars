@@ -3,7 +3,7 @@ title: Quarkus Insights Episode 257 - Taming the JVM, Optimizing Java Workloads 
 description: |
    Rob Sedor explores systematic approaches to optimizing Java applications for Kubernetes, covering container-aware heap sizing, garbage collector tuning, and integration with OpenShift autoscaling.
 
-date: 2026-08-24
+date: 2026-08-31
 time: 13:00:00
 duration: PT60M
 callLink: https://quarkus.io/insights/
