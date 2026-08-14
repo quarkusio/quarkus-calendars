@@ -1,0 +1,9 @@
+type: call
+title: Quarkus Insights Episode 261 - What is Quarkus Signals?
+description: |
+   Martin Kouba discusses Quarkus Signals, an extension that provides a unified, type-safe, asynchronous event bus for in-process messaging. It allows application components to interact in a loosely coupled fashion by emitting and receiving events (called "signals") without relying on an external message broker.
+
+date: 2026-09-28
+time: 13:00:00
+duration: PT60M
+callLink: https://quarkus.io/insights/

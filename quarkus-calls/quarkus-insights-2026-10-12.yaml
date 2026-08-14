@@ -1,0 +1,9 @@
+type: call
+title: Quarkus Insights Episode 263 - Everything you didn't want to know about Quarkus build reproducibility
+description: |
+   Five years ago, we set out to make Quarkus application builds reproducible, a key step in securing the software supply chain. It took a while, but we're there! Join Teymur Babayev, Guillaume Smet, and Ladislav Thon as we walk through the challenges we hit along the way, and what makes Quarkus builds uniquely tricky.
+
+date: 2026-10-12
+time: 13:00:00
+duration: PT60M
+callLink: https://quarkus.io/insights/

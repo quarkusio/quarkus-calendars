@@ -1,0 +1,9 @@
+type: call
+title: Quarkus Insights Episode 262 - What is Quarkus Chat Scopes?
+description: |
+   Bill Burke discusses how Quarkus Chat Scopes helps manage local and remote conversational states (memory) with Large Language Models (LLMs).
+
+date: 2026-10-05
+time: 13:00:00
+duration: PT60M
+callLink: https://quarkus.io/insights/

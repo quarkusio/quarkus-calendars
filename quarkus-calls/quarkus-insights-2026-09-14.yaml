@@ -1,0 +1,9 @@
+type: call
+title: Quarkus Insights Episode 259 - Reshapr & Quarkus
+description: |
+   Laurent Broudoux joins us to discuss Reshapr. Discover how this project leverages Quarkus to build an AI-ready access layer for your APIs, with a deep dive into the role of observability and core Quarkus features in bringing it all together.
+
+date: 2026-09-14
+time: 13:00:00
+duration: PT60M
+callLink: https://quarkus.io/insights/
