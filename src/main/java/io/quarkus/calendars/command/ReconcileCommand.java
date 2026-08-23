@@ -84,8 +84,10 @@ public class ReconcileCommand implements Callable<Integer> {
                             String date = "";
                             if (action.getLocalEvent() != null) {
                                 date = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(action.getLocalEvent().getDate());
-                            } else if (action.getRemoteEvent() != null) {
+                            } else if (action.getRemoteEvent() != null && action.getRemoteEvent().getStart() != null && action.getRemoteEvent().getStart().getDate() != null) {
                                 date = action.getRemoteEvent().getStart().getDate().toStringRfc3339();
+                            } else {
+                                date = "**NO DATE**";
                             }
                             return "  " + icon + " " + action.getDescription() + (date.isEmpty() ? "" : " (date: " + date + ")");
                         })
