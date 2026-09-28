@@ -1,8 +1,6 @@
 type: call
 title: Quarkus Insights Episode 272 - Optimizing Santa's travels with Timefold
-description: |
-   Tom Cools joins us on Quarkus Insights to help Santa on his rounds! Every Christmas Eve, Santa faces a monumental challenge - delivering gifts to millions of children around the world in just one night. There’s no time for detours, and a well-crafted plan is essential! We’ll help Santa find the optimal travel route for his journey using Timefold, an open-source AI solver. By setting up some basic domain classes, you’ll be able to tackle vehicle routing problems without getting lost in the magic (aka math). Through a series of live demos, you’ll see practical examples in action and leave with a powerful new tool in your problem-solving toolbox. Let’s use our favorite programming language to make sure everyone gets their presents under the Christmas tree!
-
+description: "Tom Cools joins us on Quarkus Insights to help Santa on his rounds! Every Christmas Eve, Santa faces a monumental challenge - delivering gifts to millions of children around the world in just one night. There's no time for detours, and a well-crafted plan is essential. We'll help Santa find the optimal travel route for his journey using Timefold, an open-source AI solver. By setting up some basic domain classes, you'll be able to tackle vehicle routing problems. Let's use our favorite programming language to make sure everyone gets their presents under the Christmas tree!"
 date: 2026-12-14
 time: 13:00:00
 duration: PT60M
