@@ -1,7 +1,7 @@
 type: call
 title: Quarkus Insights Episode 271 - Garbage in, insight out - document intelligence for AI-infused Java applications
 description: |
-   Session with Eric Deandrea, details to come.
+   Eric Deandrea will introduce Docling Java and dive into how it brings first-class document intelligence to the JVM. He'll walk through the library's architecture and show how it plugs naturally into the frameworks and AI stacks you're likely already using.
 
 date: 2026-12-07
 time: 13:00:00
