@@ -1,0 +1,15 @@
+type: call
+title: Quarkus Insights Episode 264 - JobRunr 9 on Quarkus 3.40 LTS - what happens when a job fails halfway
+description: |
+   JobRunr 9 came out on 30 September, the same day as Quarkus 3.40 LTS, and the quarkus-jobrunr extension supports the new LTS from day one.
+
+Ronald Dehuysser, creator of JobRunr, is back on Quarkus Insights to show what changed. A plain retry starts a job again from the top, so a customer you charged in step three gets charged again. With runStepOnce, JobRunr remembers which steps already finished. The new Job Progress Chart view (open source) puts every attempt and every step on one timeline, so you can watch a retry skip straight to the step that failed.
+
+We will also look at what is new in JobRunr Pro - Job Analytics on the dashboard, pausing a batch in the middle of an incident, and jobs that start within milliseconds on Postgres thanks to LISTEN/NOTIFY.
+
+And we cover what to check when you upgrade from JobRunr 8.
+
+date: 2026-10-19
+time: 13:00:00
+duration: PT60M
+callLink: https://quarkus.io/insights/
