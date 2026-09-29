@@ -1,0 +1,9 @@
+type: call
+title: Quarkus Insights Episode 266 - What's new with Leyden?
+description: |
+   Session with Maria Arias de Reyna Dominguez centered around JEP with native compilation inside the cache.
+
+date: 2026-11-02
+time: 13:00:00
+duration: PT60M
+callLink: https://quarkus.io/insights/
