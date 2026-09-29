@@ -1,7 +1,9 @@
 type: call
 title: Quarkus Insights Episode 265 - Observability & evaluation with Langfuse
 description: |
-   Session with Eric Deandrea, description to come.
+   AI-infused applications demand a rethinking of our testing practices. Developers face a new class of challenge as LLMs become standard integration points in modern applications: non-deterministic behavior that traditional testing approaches were never designed to handle.
+
+Join Eric as he talks about testing strategies and evaluations in Quarkus and LangChain4j, as well as integrations with other open source tools.
 
 date: 2026-10-26
 time: 13:00:00
