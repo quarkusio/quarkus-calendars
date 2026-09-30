@@ -1,0 +1,8 @@
+type: call
+title: Quarkus Insights Episode 268 - Secure AI agents with Quarkus LangChain4j
+description: "AI agents are quickly entering enterprise apps, making security a critical concern—you don't want an agent dropping your database or executing privileged actions. Willem Jan Glerum & Sergey Beryozkin will use live coding to show you how to build simple, yet secure AI agents using Quarkus and LangChain4j. Learn best practices for implementing effective guardrails to keep your mission-critical systems safe."
+
+date: 2026-11-16
+time: 13:00:00
+duration: PT60M
+callLink: https://quarkus.io/insights/
