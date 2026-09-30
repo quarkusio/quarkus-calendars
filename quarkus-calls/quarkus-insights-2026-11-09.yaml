@@ -1,0 +1,8 @@
+type: call
+title: Quarkus Insights Episode 267 - Sandboxing agents with Quarkus, for Quarkus
+description: "Join Sanne Grinovero as he discusses isx, a sandbox for coding agents, built on Quarkus and made for the kind of work Quarkus developers do. Agents like Claude Code are far more useful when they can install packages, run services and break things freely — which is exactly what you don't want on your laptop. isx gives them a machine of their own: a full Linux system container that branches copy-on-write like a git repo, with credentials isolated behind a proxy. Long builds, many JDKs, Testcontainers and Dev Services running inside the sandbox — all disposable."
+
+date: 2026-11-09
+time: 13:00:00
+duration: PT60M
+callLink: https://quarkus.io/insights/
