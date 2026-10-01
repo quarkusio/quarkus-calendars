@@ -29,4 +29,4 @@ reconciliation:
 
 # The LTS releases
 lts:
-  versions: 3.20, 3.27, 3.33
+  versions: 3.20, 3.27, 3.33, 3.40
