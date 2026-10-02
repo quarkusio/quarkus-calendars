@@ -1,0 +1,7 @@
+type: call
+title: Quarkus Insights Episode 273 - What is RunsOn?
+description: "Cyril Rohr joins us to discuss how RunsOn, a critical part of Quarkus operations, automatically manages self-hosted, ephemeral runners inside your own AWS account."
+date: 2027-01-11
+time: 13:00:00
+duration: PT60M
+callLink: https://quarkus.io/insights/
