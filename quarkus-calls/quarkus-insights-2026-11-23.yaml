@@ -1,6 +1,6 @@
 type: call
-title: Quarkus Insights Episode 269 - Migration tooling with Quarkus Agents
-description: "Charles Moulliard & Aurea Muñoz Hernandez join us to discuss using Quarkus Agents and Skills to help automate the migration your Spring projects."
+title: Quarkus Insights Episode 269 - AI-Assisted Migration Tools for Quarkus
+description: "Migrating an existing application to Quarkus involves much more than swapping annotations, build files, dependency management, configuration, and testing all need attention. What if AI with superpowers (spoiler: deterministic tools) could handle that process? Charles Moulliard and Aurea Munoz join us to discuss about a set of open-source migration tools built as skills that analyze a project, detect what needs to change, and guide the migration step by step. The goal: make AI behave as deterministically as possible. By giving the agent purpose-built tools instead of letting it improvise, we cut both the human effort (from days to hours) and the token cost of a migration. We'll show how this works in practice and how the community can contribute new tools."
 
 date: 2026-11-23
 time: 13:00:00
