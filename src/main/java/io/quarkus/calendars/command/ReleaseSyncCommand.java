@@ -36,7 +36,7 @@ public class ReleaseSyncCommand implements Callable<Integer> {
 
     private static final String MAVEN_REPO_URL = "https://repo1.maven.org/maven2/io/quarkus/platform/quarkus-bom/";
     private static final String RELEASES_DIR = "quarkus-releases";
-    private static final String MIN_VERSION = "3.20.0";
+    private static final String MIN_VERSION = "3.27.0";
 
     // Pattern to match lines like: <a href="2.0.0.Final/" title="2.0.0.Final/">2.0.0.Final/</a>                                      2021-06-30 13:00         -
     private static final Pattern LINE_PATTERN = Pattern.compile("<a href=\"([^/\"]+)/\".*?(\\d{4}-\\d{2}-\\d{2})\\s+\\d{2}:\\d{2}\\s+-");
@@ -60,7 +60,7 @@ public class ReleaseSyncCommand implements Callable<Integer> {
             // Step 2: Sort versions
             Collections.sort(versions);
 
-            // Step 3: Filter versions >= 3.20.0
+            // Step 3: Filter versions >= 3.27.0
             List<PlatformVersion> filteredVersions = versions.stream()
                 .filter(v -> v.isAtLeast(MIN_VERSION))
                 .toList();
