@@ -1,0 +1,7 @@
+type: call
+title: Quarkus Insights Episode 275 - What's new with EDDI?
+description: "Gregor Jarisch & Roland Pickl join us to discuss EDDI, a secure multi-agent AI platform built on Quarkus and LangChain4j where autonomous agents collaborate, vote, and negotiate under strict human oversight. Featuring signed audit logs, 19 LLM provider integrations, and an OpenSSF Gold badge, EDDI leverages Quarkus virtual threads and NATS clustering to power robust, industrial-grade AI teams."
+date: 2027-01-25
+time: 13:00:00
+duration: PT60M
+callLink: https://quarkus.io/insights/
